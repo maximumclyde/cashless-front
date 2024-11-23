@@ -32,7 +32,7 @@
       "@layouts": ["./src/layouts"],
       "@components": ["./src/components"],
       "@views": ["./src/views"],
-      "@api": ["./src/providers/api"]
+      "@api": ["src/api"]
     }
   },
   "include": ["src"]
