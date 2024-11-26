@@ -1,14 +1,15 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { ThemeProvider, QueryProvider, router } from "@providers";
+import { RouterProvider } from "react-router-dom";
+
 import "./index.css";
-import App from "./App.tsx";
-import { ThemeProvider, QueryProvider } from "@providers";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryProvider>
       <ThemeProvider defaultTheme="system" storageKey="ui-theme">
-        <App />
+        <RouterProvider router={router} />
       </ThemeProvider>
     </QueryProvider>
   </StrictMode>

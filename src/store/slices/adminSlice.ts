@@ -4,10 +4,9 @@ import { AdminType } from "@types";
 type PartialAdmin = Omit<AdminType, "memberPassword"> | undefined;
 
 export interface AdminSlice {
-  admin: PartialAdmin;
-  token: string | undefined;
+  admin: PartialAdmin | undefined;
   setAdmin: (admin: PartialAdmin) => void;
-  setToken: (token: string | undefined) => void;
+  removeAdmin: () => void;
 }
 
 export const adminSlice: StateCreator<AdminSlice, [], [], AdminSlice> = (
@@ -15,12 +14,11 @@ export const adminSlice: StateCreator<AdminSlice, [], [], AdminSlice> = (
 ) => {
   return {
     admin: undefined,
-    token: undefined,
     setAdmin(admin) {
-      return set({ admin });
+      return set((state) => ({ ...state, admin }), true);
     },
-    setToken(token) {
-      return set({ token });
+    removeAdmin() {
+      return set((state) => ({ ...state, admin: undefined }), true);
     },
   };
 };
