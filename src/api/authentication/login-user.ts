@@ -1,6 +1,7 @@
-import { axios } from "@/providers";
-import { LoginMemberResponse, MemberLoginRequest, StaffMember } from "@/types";
-import useStore from "@/store";
+import { axios } from "@providers";
+import useStore from "@store";
+import { router } from "@providers";
+import { LoginMemberResponse, MemberLoginRequest, StaffMember } from "@types";
 
 type AdminType = StaffMember & { userClass: 0 };
 type AdminLoginResponse = LoginMemberResponse & { member: AdminType };
@@ -11,9 +12,9 @@ export async function loginUser(loginData: MemberLoginRequest) {
     .then((res) => {
       const { member, token } = res.data;
 
-      useStore.setState({
-        admin: member,
-        token,
-      });
+      useStore.getState().setAdmin(member);
+      useStore.getState().setToken(token);
+
+      router.navigate("/events");
     });
 }

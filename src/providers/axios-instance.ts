@@ -1,18 +1,23 @@
 import axios from "axios";
+import { router } from "@/providers";
 
 const instance = axios.create({
-  baseURL: process.env.VITE_API_URL!,
+  baseURL: import.meta.env.VITE_API_URL!,
   timeout: 30_000,
 });
 
 instance.interceptors.request.use((config) => {
   if (config["headers"]) {
-    const token = localStorage.getItem(process.env.VITE_TOKEN_KEY!);
+    const persistentState = localStorage.getItem(
+      import.meta.env.VITE_TOKEN_KEY!
+    );
 
-    if (!token) {
+    if (persistentState === null) {
       Promise.reject("No token");
+      return config;
     }
 
+    const token = JSON.parse(persistentState!)?.state?.token;
     config.headers.Authorization = `Bearer ${token}`;
   }
 
@@ -24,9 +29,11 @@ instance.interceptors.response.use(
     return response;
   },
   async (response) => {
-    if (typeof response.data === "string" && response.data.includes("token")) {
-      window.history.pushState(null, "", "/login");
-      window.history.go(0);
+    if (
+      typeof response.response.data === "string" &&
+      response.response.data.includes("token")
+    ) {
+      router.navigate("/login");
       return Promise.reject(response);
     }
 

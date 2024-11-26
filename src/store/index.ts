@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { Store, adminSlice } from "./slices";
+import { Store, adminSlice, tokenSlice } from "./slices";
 
 const useStore = create<Store>()(
   devtools(
@@ -8,10 +8,11 @@ const useStore = create<Store>()(
       (...args) => {
         return {
           ...adminSlice(...args),
+          ...tokenSlice(...args),
         };
       },
       {
-        name: "cashless",
+        name: import.meta.env.VITE_TOKEN_KEY,
         partialize(state) {
           return {
             admin: state.admin,
