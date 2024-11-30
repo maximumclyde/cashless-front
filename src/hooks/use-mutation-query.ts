@@ -25,13 +25,13 @@ export function useMutationQuery<Response, TVariables>(
     successToastOptions,
     errorToastOptions,
     queryKeys,
-    autoUpdateData,
+    autoUpdateData = true,
     ...rest
   } = options;
 
   const mutation = useMutation({
     mutationFn: mutationFn,
-    onSuccess(data) {
+    onSuccess(data, ...args) {
       if (autoUpdateData) {
         client.setQueryData(queryKeys, data);
       }
@@ -43,8 +43,12 @@ export function useMutationQuery<Response, TVariables>(
           description: successToastOptions.description,
         });
       }
+
+      if (rest.onSuccess && typeof rest.onSuccess === "function") {
+        rest.onSuccess(data, ...args);
+      }
     },
-    onError(error) {
+    onError(error, ...args) {
       console.log("Operation error: ", error);
       if (errorToastOptions) {
         toast({
@@ -52,6 +56,10 @@ export function useMutationQuery<Response, TVariables>(
           title: errorToastOptions.title,
           description: errorToastOptions.description,
         });
+      }
+
+      if (rest.onError && typeof rest.onError === "function") {
+        rest.onError(error, ...args);
       }
     },
     ...rest,
