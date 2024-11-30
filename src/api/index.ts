@@ -22,3 +22,5 @@ export { getStands } from "./stands/get-stands";
 export { patchStand } from "./stands/update-stand";
 export { getTopUps } from "./top-ups/get-top-ups";
 export { getTransactions } from "./transactions/get-transactions";
+export { getCurrencies } from "./currencies/get-currencies";
+export { postCurrencies } from "./currencies/post-currencies";
