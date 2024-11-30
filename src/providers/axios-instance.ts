@@ -12,11 +12,6 @@ instance.interceptors.request.use((config) => {
       import.meta.env.VITE_TOKEN_KEY!
     );
 
-    if (persistentState === null) {
-      Promise.reject("No token");
-      return config;
-    }
-
     const token = JSON.parse(persistentState!)?.state?.token;
     config.headers.Authorization = `Bearer ${token}`;
   }
